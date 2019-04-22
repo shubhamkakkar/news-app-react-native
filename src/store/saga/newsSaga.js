@@ -2,7 +2,7 @@ import { put, call, take, select } from 'redux-saga/effects';
 import {
     SET_TOP_HEADLINES, setTopHeadlines
 } from "../actions"
-import newHeadlines from "./helperFunctions"
+import { newHeadlines } from "./helperFunctions"
 
 const getloadBool = state => state.stopLoadNews
 

@@ -3,22 +3,29 @@ import { View, Image, FlatList, TouchableOpacity } from 'react-native'
 import { Text, Button } from 'native-base';
 import { connect } from "react-redux"
 import NewsHOC from "../../components/News/News"
-import { setTopHeadlines, stopLoadNews } from "../../store/actions"
+import { setTopHeadlines, stopLoadNews, querySaga, query } from "../../store/actions"
 class News extends Component {
     state = {
         topheadliners: []
     }
 
     setStateForTopNews = () => {
-        this.props.loadTopNews()
-        const combinedTopHeadlinersSubArrays = []
-        this.props.topHeadlineReducer.map(parentAr => parentAr.map(ar => combinedTopHeadlinersSubArrays.push(ar)))
-        this.setState({
-            topheadliners: [
-                ...this.state.topheadliners,
-                ...combinedTopHeadlinersSubArrays
-            ]
-        })
+        // this.props.loadTopNews()
+        // const combinedTopHeadlinersSubArrays = []
+        // this.props.topHeadlineReducer.map(parentAr => parentAr.map(ar => combinedTopHeadlinersSubArrays.push(ar)))
+        // this.setState({
+        //     topheadliners: [
+        //         ...this.state.topheadliners,
+        //         ...combinedTopHeadlinersSubArrays
+        //     ]
+        // })
+
+        this.props.loadQueryNews()
+
+    }
+
+    componentWillMount() {
+        this.props.loadQueryParameter("bitcoin")
     }
 
     componentDidUpdate() {
@@ -87,14 +94,16 @@ class News extends Component {
         )
     }
 }
-const mapStateToProps = ({ topHeadlineReducer }) => ({
-    topHeadlineReducer
+const mapStateToProps = ({ topHeadlineReducer, queryNewsReducer }) => ({
+    topHeadlineReducer, queryNewsReducer
 })
 
 const mapDispatchToProps = dispatch => {
     return {
         loadTopNews: () => dispatch(setTopHeadlines()),
-        stopLoadNews: () => dispatch(stopLoadNews())
+        stopLoadNews: () => dispatch(stopLoadNews()),
+        loadQueryNews: () => dispatch(querySaga()),
+        loadQueryParameter: (q) => dispatch(query(q))
     }
 }
 
