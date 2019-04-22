@@ -7,23 +7,19 @@ class HeaderNav extends Component {
     state = {
         open: false
     }
-    search = () => {
-        this.setState({ open: true })
-    }
+
+    search = () => this.setState({ open: true })
+
     saveToBookmark = () => {
         alert("saveToBookmark")
     }
 
+    handleClose = () => this.setState({ open: false })
     render() {
         return (
             <Fragment>
                 <Header androidStatusBarColor="#1868A8" style={{ backgroundColor: "#2196F3" }}>
-                    <Left>
-                        <Button transparent>
-                            <Icon name='arrow-back' />
-                        </Button>
-                    </Left>
-                    <Body>
+                    <Body style={{ marginLeft: 10 }}>
                         <Title>News</Title>
                     </Body>
                     <Right>
@@ -39,21 +35,20 @@ class HeaderNav extends Component {
                     animationType="slide"
                     transparent={false}
                     visible={this.state.open}
-                    onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                    }}
+                    onRequestClose={this.handleClose}
                 >
                     <View style={{ flex: 1, justifyContent: "center", alignContent: "center" }}>
-                        <ScrollView style={{ flexGrow: 1 }}>
+                        <View style={{ flexGrow: 1 }}>
                             <SearchBarContainer />
-                        </ScrollView>
-                        <View>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    this.setState({ open: false })
-                                }}>
-                                <Text>Show Modal</Text>
-                            </TouchableOpacity>
+                        </View>
+                        <View style={{ flexDirection: "row", justifyContent: "center", alignContent: "center", margin: 5 }}>
+                            <Button
+                                style={{ backgroundColor: "#f50057", borderColor: "#f50057" }}
+                                rounded onPress={this.handleClose}>
+                                <TouchableOpacity>
+                                    <Text danger>X</Text>
+                                </TouchableOpacity>
+                            </Button>
                         </View>
                     </View>
                 </Modal>

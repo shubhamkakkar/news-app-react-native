@@ -1,38 +1,37 @@
 import React, { Component, Fragment } from 'react'
-import { View, Image, FlatList, TouchableOpacity } from 'react-native'
+import { View, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native'
 import { Text, Button } from 'native-base';
 import { connect } from "react-redux"
 import NewsHOC from "../../components/News/News"
 import { setTopHeadlines, stopLoadNews, querySaga, query } from "../../store/actions"
 class News extends Component {
     state = {
-        topheadliners: []
+        topheadliners: [],
+        showActivityIndicator: false
     }
 
     setStateForTopNews = () => {
-        // this.props.loadTopNews()
-        // const combinedTopHeadlinersSubArrays = []
-        // this.props.topHeadlineReducer.map(parentAr => parentAr.map(ar => combinedTopHeadlinersSubArrays.push(ar)))
-        // this.setState({
-        //     topheadliners: [
-        //         ...this.state.topheadliners,
-        //         ...combinedTopHeadlinersSubArrays
-        //     ]
-        // })
-
-        this.props.loadQueryNews()
-
+        this.props.loadTopNews()
+        const combinedTopHeadlinersSubArrays = []
+        this.props.topHeadlineReducer.map(parentAr => parentAr.map(ar => combinedTopHeadlinersSubArrays.push(ar)))
+        this.setState({
+            topheadliners: [
+                ...this.state.topheadliners,
+                ...combinedTopHeadlinersSubArrays
+            ]
+        })
     }
 
     componentWillMount() {
         this.props.loadQueryParameter("bitcoin")
+        this.props.loadTopNews()
     }
 
     componentDidUpdate() {
         console.log(this.state)
     }
-    onPressFn = index => { }
     _KeyExtractor = (item, index) => index.toString()
+
     _renderItem = ({ item, index }) => (
         <NewsHOC
             key={index}
@@ -48,7 +47,11 @@ class News extends Component {
     )
 
     onEndReached = () => {
-        this.listRef.getScrollResponder().scrollTo(0)
+        this.listRef.getScrollResponder().scrollTo({ y: 0, animated: true });
+    }
+
+    componentDidUpdate() {
+        console.log(this.state)
     }
 
     render() {
@@ -69,7 +72,9 @@ class News extends Component {
                                 flexDirection: "row", justifyContent: "center", backgroundColor: "#FAFAFA"
                             }}>
                                 <Button style={{ margin: 2, backgroundColor: "#2979ff" }} rounded onPress={() => this.setStateForTopNews()}>
-                                    <Text primary>Load More</Text>
+                                    <TouchableOpacity>
+                                        <Text primary>Load More</Text>
+                                    </TouchableOpacity>
                                 </Button>
                             </View>
                         </Fragment>
@@ -81,7 +86,9 @@ class News extends Component {
                             }}>
                                 <View>
                                     <Button style={{ margin: 2, backgroundColor: "#f50057", borderColor: "#f50057" }} bordered rounded onPress={() => this.setStateForTopNews()}>
-                                        <Text style={{ color: "white" }}> Click to start reading </Text>
+                                        <TouchableOpacity>
+                                            <Text style={{ color: "white" }}> Click to start reading </Text>
+                                        </TouchableOpacity>
                                     </Button>
                                 </View>
                             </View>
