@@ -1,0 +1,44 @@
+{
+    "countryCodeAndName": [
+        {
+            "code": "ae",
+            "country": "United Arab"
+        },
+        {
+            "code": "us",
+            "country": "USA"
+        },
+        {
+            "code": "in",
+            "country": "India"
+        },
+        {
+            "code": "ma",
+            "country": "Morocco"
+        },
+        {
+            "code": "nz",
+            "country": "New Zealand"
+        }
+    ],
+    "category": [
+        {
+            "label": "entertainment"
+        },
+        {
+            "label": "general"
+        },
+        {
+            "label": "health"
+        },
+        {
+            "label": "science"
+        },
+        {
+            "label": "sports"
+        },
+        {
+            "label": "technology"
+        }
+    ]
+}

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react"
-import Header from "./src/components/Header/Header"
+import Header from "./src/container/Header/Header"
 import News from "./src/container/News/News"
 
 import configureStore from "./src/store/storeIndex";
