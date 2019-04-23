@@ -18,21 +18,35 @@ store.subscribe(() => {
 class NewsContainer extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <Fragment>
-          <Header />
-          <News />
-        </Fragment>
-      </Provider>
+      <Fragment>
+        <Header />
+        <News />
+      </Fragment>
 
     )
   }
 }
 
+
 const AppNavigator = createStackNavigator({
   SplashScreen,
   DefaultSelections,
   NewsContainer
-});
+},
+  {
+    defaultNavigationOptions: {
+      header: null
+    }
+  });
 
-export default createAppContainer(AppNavigator);  
+let Root = createAppContainer(AppNavigator);
+
+export default class App extends Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <Root />
+      </Provider>
+    );
+  }
+}

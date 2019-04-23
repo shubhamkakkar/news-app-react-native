@@ -71,7 +71,7 @@ class News extends Component {
                             <View style={{
                                 flexDirection: "row", justifyContent: "center", backgroundColor: "#FAFAFA"
                             }}>
-                                <Button style={{ margin: 2, backgroundColor: "#2979ff" }} rounded onPress={() => this.setStateForTopNews()}>
+                                <Button style={{ margin: 2, backgroundColor: "#3d5afe" }} rounded onPress={() => this.setStateForTopNews()}>
                                     <TouchableOpacity>
                                         <Text primary>Load More</Text>
                                     </TouchableOpacity>

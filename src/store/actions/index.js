@@ -4,6 +4,8 @@ const STOP_LOAD_NEWS = "STOP_LOAD_NEWS"
 const QUERY_SAGA = "QUERY_SAGA"
 const QUERY = "QUERY"
 
+const QUEST = "QUEST"
+
 const setTopHeadlines = news => ({
     type: SET_TOP_HEADLINES,
     news
@@ -22,6 +24,11 @@ const querySaga = news_q => ({
     news_q
 })
 
+const quest = quest => ({
+    type: QUEST,
+    quest
+})
+
 export {
     SET_TOP_HEADLINES,
     setTopHeadlines,
@@ -31,5 +38,7 @@ export {
     query,
     QUERY_SAGA,
     querySaga,
+    QUEST,
+    quest
 
 }

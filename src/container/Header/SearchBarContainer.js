@@ -6,23 +6,15 @@ import { Modal, TouchableOpacity, ScrollView, Keyboard, TextInput } from "react-
 import searchJSON from "../../api/countryJSON/searchData.json"
 import CountryCodePicker from "../../components/CountryCodePicker/CountryCodePicker"
 import CategoryPicker from "../../components/CategoryPicker/CategoryPicker"
-import ModalCloser from "../../components/ModalCloser/ModalCloser.js";
+import ModalCloser from "../../components/ModalCloser/ModalCloser";
 import HeaderComponent from "../../components/Header/Header"
-const ModalHOc = props => (
-    <Modal
-        animationType="slide"
-        transparent={false}
-        visible={props.visible}
-        onRequestClose={props.handleClose}
-    >
-        {props.children}
-    </Modal>
-)
-
+import DefaultSelectionAndSearchCommon from "../../components/DefaultSelectionAndSearchCommon/DefaultSelectionAndSearchCommon"
+import ModalHOC from "../../components/ModalHOC/ModalHOC"
 class SearchBarContainer extends Component {
 
     state = {
         country: [],
+        category: [],
         countryCodeModalOpen: false,
         categoryModalOpen: false,
         hideWithKeyboard: false
@@ -134,52 +126,23 @@ class SearchBarContainer extends Component {
                                     }
 
                                 </View>
-                                <View style={{
-                                    flex: 1,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}>
-                                    {
-                                        [
-                                            "Country", "Category"
-                                        ].map(res => (
-                                            <View key={res}>
-                                                <TouchableOpacity
-                                                    style={{
-                                                        marginBottom: 10,
-                                                        backgroundColor: "#3d5afe",
-                                                        borderColor: "#3d5afe",
-                                                        borderRadius: 25,
-                                                        justifyContent: 'center',
-                                                        alignItems: "center"
-                                                    }}
-                                                    onPress={() => this.handleButtons(res)}
-                                                >
-                                                    <Text style={{
-                                                        color: "white",
-                                                        padding: 10,
-                                                    }}> Select {res} </Text>
-                                                </TouchableOpacity>
-                                            </View>
-                                        ))
-                                    }
-                                </View>
+                                <DefaultSelectionAndSearchCommon handleButtons={this.handleButtons} />
                                 <ModalCloser handleClose={this.props.handleClose} />
                             </Fragment>
                         )
                 }
-                <ModalHOc visible={this.state.countryCodeModalOpen} handleClose={this.handleClose}>
+                <ModalHOC visible={this.state.countryCodeModalOpen} handleClose={this.handleClose}>
                     <View style={{ flexGrow: 1 }}>
                         <CountryCodePicker country={this.state.country} />
                     </View>
                     <ModalCloser handleClose={this.handleClose} />
-                </ModalHOc>
-                <ModalHOc visible={this.state.categoryModalOpen} handleClose={this.handleClose}>
+                </ModalHOC>
+                <ModalHOC visible={this.state.categoryModalOpen} handleClose={this.handleClose}>
                     <View style={{ flexGrow: 1 }}>
                         <CategoryPicker category={this.state.category} />
                     </View>
                     <ModalCloser handleClose={this.handleClose} />
-                </ModalHOc>
+                </ModalHOC>
             </Container>
         )
     }
