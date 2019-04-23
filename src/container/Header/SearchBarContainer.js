@@ -1,25 +1,20 @@
 import React, { Component } from "react"
 import {
-    View, Text, Left, Container, Header,
-    Body, Title, Label, Content, Item, Input,
-    Button,
-    Form
+    View, Text, Container, Item, Input,
 } from "native-base";
-import { Modal, TouchableOpacity } from "react-native"
+import { Modal, TouchableOpacity, ScrollView } from "react-native"
 import searchJSON from "../../api/countryJSON/searchData.json"
-
 import CountryCodePicker from "../../components/CountryCodePicker/CountryCodePicker"
 import CategoryPicker from "../../components/CategoryPicker/CategoryPicker"
-
+import ModalCloser from "../../components/ModalCloser/ModalCloser.js";
+import HeaderComponent from "../../components/Header/Header"
 
 const ModalHOc = props => (
     <Modal
         animationType="slide"
         transparent={false}
         visible={props.visible}
-        onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-        }}
+        onRequestClose={props.handleClose}
     >
         {props.children}
     </Modal>
@@ -40,21 +35,32 @@ class SearchBarContainer extends Component {
         })
     }
 
-    componentDidMount() {
-        console.log(this.state)
+    handleButtons = res => {
+        switch (res) {
+            case "Country": {
+                this.setState({ countryCodeModalOpen: true })
+                break;
+            }
+            case "Category": {
+                this.setState({ categoryModalOpen: true })
+                break;
+            }
+            case "Top Headlines": {
+                break;
+            }
+            case "All Stories": {
+                break;
+            }
+        }
     }
-    handleButtons = res => alert(res)
+
+    handleClose = () => this.setState({ categoryModalOpen: false, countryCodeModalOpen: false })
+
 
     render() {
         return (
             <Container>
-                <Header androidStatusBarColor="#1868A8" style={{ backgroundColor: "#2196F3" }}>
-                    <Body>
-                        <Title style={{ paddingLeft: 5 }}>
-                            Search
-                        </Title>
-                    </Body>
-                </Header>
+                <HeaderComponent title={"Search"} />
                 <View style={{
                     flex: 1,
                     alignItems: 'center',
@@ -65,13 +71,22 @@ class SearchBarContainer extends Component {
                             "Top Headlines", "All Stories"
                         ].map((res, index) => (
                             <View key={res}>
-                                <Button
-                                    style={{ marginBottom: 5, backgroundColor: "#3d5afe", borderColor: "#3d5afe" }}
-                                    rounded onPress={() => this.handleQuest(index)}>
-                                    <TouchableOpacity>
-                                        <Text style={{ color: "white" }}>  {res} </Text>
-                                    </TouchableOpacity>
-                                </Button>
+                                <TouchableOpacity
+                                    style={{
+                                        marginBottom: 10,
+                                        backgroundColor: "#3d5afe",
+                                        borderColor: "#3d5afe",
+                                        borderRadius: 25,
+                                        alignItems: 'center',
+                                        justifyContent: "center"
+                                    }}
+                                    onPress={() => this.handleButtons(index)}
+                                >
+                                    <Text style={{
+                                        color: "white",
+                                        padding: 10,
+                                    }}>  {res} </Text>
+                                </TouchableOpacity>
                             </View>
                         ))
                     }
@@ -96,23 +111,38 @@ class SearchBarContainer extends Component {
                             "Country", "Category"
                         ].map(res => (
                             <View key={res}>
-                                <Button
-                                    style={{ marginBottom: 5, backgroundColor: "#3d5afe", borderColor: "#3d5afe" }}
-                                    rounded onPress={() => this.handleButtons(res)}>
-                                    <TouchableOpacity>
-                                        <Text style={{ color: "white" }}> Select {res} </Text>
-                                    </>
-                                </Button>
+                                <TouchableOpacity
+                                    style={{
+                                        marginBottom: 10,
+                                        backgroundColor: "#3d5afe",
+                                        borderColor: "#3d5afe",
+                                        borderRadius: 25,
+                                        justifyContent: 'center',
+                                        alignItems: "center"
+                                    }}
+                                    onPress={() => this.handleButtons(res)}
+                                >
+                                    <Text style={{
+                                        color: "white",
+                                        padding: 10,
+                                    }}> Select {res} </Text>
+                                </TouchableOpacity>
                             </View>
                         ))
                     }
 
                 </View>
-                <ModalHOc visible={this.state.countryCodeModalOpen}>
-                    <CountryCodePicker country={this.state.country} />
+                <ModalHOc visible={this.state.countryCodeModalOpen} handleClose={this.handleClose}>
+                    <ScrollView style={{ flexGrow: 1 }}>
+                        <CountryCodePicker country={this.state.country} />
+                    </ScrollView>
+                    <ModalCloser handleClose={this.handleClose} />
                 </ModalHOc>
-                <ModalHOc visible={this.state.categoryModalOpen}>
-                    <CategoryPicker category={this.state.category} />
+                <ModalHOc visible={this.state.categoryModalOpen} handleClose={this.handleClose}>
+                    <View style={{ flexGrow: 1 }}>
+                        <CategoryPicker category={this.state.category} />
+                    </View>
+                    <ModalCloser handleClose={this.handleClose} />
                 </ModalHOc>
             </Container>
         )
