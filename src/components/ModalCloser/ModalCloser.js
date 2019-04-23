@@ -16,6 +16,7 @@ export default props => (
             }}
             onPress={props.handleClose}
         >
+            {/* arrow-back */}
             <Icon name='arrow-back' style={{ color: "white", fontSize: 20 }} />
         </TouchableOpacity>
     </View>

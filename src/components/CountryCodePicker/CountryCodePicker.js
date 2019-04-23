@@ -9,7 +9,12 @@ export default props => (
             <List>
                 {
                     props.country.map((country, index) => (
-                        <PickerCommon key={index} label={country.label}>
+                        <PickerCommon
+                            key={index}
+                            label={country.label}
+                            index={index}
+                            sendToRedux={props.sendToRedux}
+                            choice={"country"}>
                             <Text style={{ textTransform: "capitalize" }}>
                                 {country.code}
                             </Text>

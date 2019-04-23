@@ -14,7 +14,8 @@ export default props => (
                 <View key={res}>
                     <TouchableOpacity
                         style={{
-                            marginBottom: 10,
+                            marginBottom: 5,
+                            marginTop: 5,
                             backgroundColor: "#3d5afe",
                             borderColor: "#3d5afe",
                             borderRadius: 25,
@@ -28,6 +29,9 @@ export default props => (
                             padding: 10,
                         }}> Select {res} </Text>
                     </TouchableOpacity>
+                    {
+                        res === "Country" ? props.children : null
+                    }
                 </View>
             ))
         }

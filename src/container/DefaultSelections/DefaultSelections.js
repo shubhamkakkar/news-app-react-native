@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from 'react'
-import { Container, Text } from "native-base"
+import { Container, Text, Title } from "native-base"
 import {
     View,
     TouchableOpacity,
@@ -8,7 +8,7 @@ import {
     ToastAndroid,
 } from "react-native"
 import { connect } from "react-redux"
-import { quest, query } from "../../store/actions"
+import { quest, query, setTopHeadlines } from "../../store/actions"
 import readingImage from "../../assets/readingImage.png"
 import DefaultSelectionAndSearchCommon from "../../components/DefaultSelectionAndSearchCommon/DefaultSelectionAndSearchCommon"
 import searchJSON from "../../api/countryJSON/searchData.json"
@@ -16,7 +16,7 @@ import ModalHOC from "../../components/ModalHOC/ModalHOC"
 import CountryCodePicker from "../../components/CountryCodePicker/CountryCodePicker"
 import CategoryPicker from "../../components/CategoryPicker/CategoryPicker"
 import ModalCloser from "../../components/ModalCloser/ModalCloser";
-import { NavigationActions, withNavigation, StackActions } from 'react-navigation'
+import { withNavigation, StackActions } from 'react-navigation'
 
 class DefaultSelections extends Component {
     state = {
@@ -46,8 +46,32 @@ class DefaultSelections extends Component {
     }
     skip = () => {
         this.props.setQuest("everything")
-        this.props.setDefaultQuery("trump")
+        this.props.setDefaultQuery(["trump"])
+        this.props.loadNews()
         this.props.navigation.navigate("NewsContainer")
+    }
+
+    handleClose = () => this.setState({ categoryModalOpen: false, countryCodeModalOpen: false })
+
+
+    sendToRedux = (index, choice) => {
+        this.props.setQuest("top-headlines")
+        let queryP = []
+        switch (choice) {
+            case "country": {
+                queryP = [...queryP, this.state.country[index].code]
+                break;
+            }
+            case "category": {
+                queryP = [...queryP, this.state.category[index].label]
+                break;
+            }
+            default: {
+                return 0
+            }
+        }
+        this.handleClose()
+        this.props.setDefaultQuery(queryP)
     }
 
     handleButtons = button => {
@@ -66,7 +90,6 @@ class DefaultSelections extends Component {
         }
     }
 
-    handleClose = () => this.setState({ categoryModalOpen: false, countryCodeModalOpen: false })
 
     render() {
         return (
@@ -85,7 +108,9 @@ class DefaultSelections extends Component {
                     <View style={{
                         flex: 1, justifyContent: "center", alignItems: "center"
                     }}>
-                        <DefaultSelectionAndSearchCommon handleButtons={this.handleButtons} />
+                        <DefaultSelectionAndSearchCommon handleButtons={this.handleButtons}>
+                            <Title style={{ color: "#f50057" }}>OR</Title>
+                        </DefaultSelectionAndSearchCommon>
                     </View>
                 </Container>
                 <View style={{
@@ -102,23 +127,36 @@ class DefaultSelections extends Component {
                         }}
                         onPress={this.skip}
                     >
-                        <Text style={{
-                            color: "#3d5afe",
-                            padding: 10,
-                        }}>
-                            Skip
-                    </Text>
+                        {
+                            this.props.queryReducer.length
+                                ? (
+                                    <Text style={{
+                                        color: "#f50057",
+                                        padding: 10,
+                                    }}>
+                                        Your News are waiting...
+                                    </Text>
+                                )
+                                : (
+                                    <Text style={{
+                                        color: "#3d5afe",
+                                        padding: 10,
+                                    }}>
+                                        Skip
+                                    </Text>
+                                )
+                        }
                     </TouchableOpacity>
                 </View>
                 <ModalHOC visible={this.state.countryCodeModalOpen} handleClose={this.handleClose}>
                     <View style={{ flexGrow: 1 }}>
-                        <CountryCodePicker country={this.state.country} />
+                        <CountryCodePicker country={this.state.country} sendToRedux={this.sendToRedux} />
                     </View>
                     <ModalCloser handleClose={this.handleClose} />
                 </ModalHOC>
                 <ModalHOC visible={this.state.categoryModalOpen} handleClose={this.handleClose}>
                     <View style={{ flexGrow: 1 }}>
-                        <CategoryPicker category={this.state.category} />
+                        <CategoryPicker category={this.state.category} sendToRedux={this.sendToRedux} />
                     </View>
                     <ModalCloser handleClose={this.handleClose} />
                 </ModalHOC>
@@ -126,8 +164,13 @@ class DefaultSelections extends Component {
         );
     }
 }
-const mapDispatchToProps = dispatch => ({
-    setQuest: everything => dispatch(quest(everything)),
-    setDefaultQuery: query_parameter => dispatch(query(query_parameter))
+
+const mapStateToProps = ({ queryReducer }) => ({
+    queryReducer
 })
-export default withNavigation(connect(null, mapDispatchToProps)(DefaultSelections))
+const mapDispatchToProps = dispatch => ({
+    setQuest: everything_topheadlins => dispatch(quest(everything_topheadlins)),
+    setDefaultQuery: query_parameter => dispatch(query(query_parameter)),
+    loadNews: () => dispatch(setTopHeadlines())
+})
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(DefaultSelections))

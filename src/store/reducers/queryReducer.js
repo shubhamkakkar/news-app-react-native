@@ -1,8 +1,8 @@
 import { QUERY, QUERY_SAGA } from "../actions"
 
-export const queryReducer = (state = "", action) => {
+export const queryReducer = (state = [], action) => {
     if (action.type === QUERY) {
-        return action.query
+        return [...state, ...action.query]
     } else {
         return state
     }

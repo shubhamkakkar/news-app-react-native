@@ -11,6 +11,7 @@ class News extends Component {
     }
 
     setStateForTopNews = () => {
+        console.log("in here")
         this.props.loadTopNews()
         const combinedTopHeadlinersSubArrays = []
         this.props.topHeadlineReducer.map(parentAr => parentAr.map(ar => combinedTopHeadlinersSubArrays.push(ar)))
@@ -23,8 +24,12 @@ class News extends Component {
     }
 
     componentWillMount() {
-        this.props.loadQueryParameter("bitcoin")
-        this.props.loadTopNews()
+        this.setStateForTopNews()
+    }
+
+    componentDidMount() {
+        this.setStateForTopNews()
+
     }
 
     componentDidUpdate() {
@@ -48,10 +53,6 @@ class News extends Component {
 
     onEndReached = () => {
         this.listRef.getScrollResponder().scrollTo({ y: 0, animated: true });
-    }
-
-    componentDidUpdate() {
-        console.log(this.state)
     }
 
     render() {

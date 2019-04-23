@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { ActivityIndicator } from "react-native"
-import { Container, Content } from 'native-base'
+import { Container, View } from 'native-base'
 import AsyncStorage from '@react-native-community/async-storage';
 class SplashScreen extends Component {
     constructor() {
@@ -20,9 +20,9 @@ class SplashScreen extends Component {
     render() {
         return (
             <Container>
-                <Content padder>
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                     <ActivityIndicator />
-                </Content>
+                </View>
             </Container>
         )
     }
