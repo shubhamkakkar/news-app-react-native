@@ -37,7 +37,6 @@ class DefaultSelections extends Component {
 
 
     handleBackButton = () => {
-
         const pushAction = StackActions.push({
             routeName: 'DefaultSelections',
         });
@@ -46,8 +45,11 @@ class DefaultSelections extends Component {
     }
     skip = () => {
         this.props.setQuest("everything")
-        this.props.setDefaultQuery(["trump"])
         this.props.loadNews()
+        if (!this.props.queryReducer.length) {
+            this.props.setDefaultQuery(["trump"])
+
+        }
         this.props.navigation.navigate("NewsContainer")
     }
 

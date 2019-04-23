@@ -21,7 +21,7 @@ class SplashScreen extends Component {
         return (
             <Container>
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                    <ActivityIndicator />
+                    <ActivityIndicator color="#f50057" size="large" />
                 </View>
             </Container>
         )

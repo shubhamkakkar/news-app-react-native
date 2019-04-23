@@ -32,8 +32,15 @@ class News extends Component {
 
     }
 
+    componentWillReceiveProps() {
+        if (!this.state.topheadliners.length) {
+            this.setStateForTopNews()
+        }
+    }
+
     componentDidUpdate() {
         console.log(this.state)
+
     }
     _KeyExtractor = (item, index) => index.toString()
 
@@ -85,29 +92,12 @@ class News extends Component {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                             }}>
-                                <View>
-                                    <TouchableOpacity
-                                        style={{
-                                            marginBottom: 10,
-                                            backgroundColor: "#f50057",
-                                            borderColor: "#f50057",
-                                            borderRadius: 25,
-                                            justifyContent: 'center',
-                                            alignItems: "center"
-                                        }}
-                                        onPress={() => this.setStateForTopNews()}
-                                    >
-                                        <Text style={{
-                                            color: "white", padding: 10,
-                                        }}> Click to start reading </Text>
-                                    </TouchableOpacity>
+                                <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                                    <ActivityIndicator size="large" color="#f50057" />
                                 </View>
                             </View>
-
                         )
-
                 }
-
             </View>
         )
     }
