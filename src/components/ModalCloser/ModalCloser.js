@@ -2,7 +2,7 @@ import React from "react"
 import { View, Text } from "native-base"
 import { TouchableOpacity } from "react-native"
 export default props => (
-    <View style={{ flexDirection: "row", justifyContent: "center", alignContent: "center", margin: 5 }}>
+    <View style={{ flexDirection: "row", justifyContent: "center", alignContent: "center", margin: 5, backgroundColor: "#FAFAFA" }}>
         <TouchableOpacity
             style={{
                 width: 50,

@@ -5084,6 +5084,11 @@ react-native-easy-grid@0.2.1:
   dependencies:
     lodash "4.17.11"
 
+react-native-hide-with-keyboard@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-hide-with-keyboard/-/react-native-hide-with-keyboard-1.2.0.tgz#aa9da6d1eae85fe8ca2dbab6c16f05af9b71974c"
+  integrity sha512-sCbZfdOscTAATw9L2hXLj1jJ+UBjgZCxmtMNlxHKsxgVhgHq4AOQPDkLc+CrpnGg5bim5MKv4dYXM8C+m54wsQ==
+
 react-native-iphone-x-helper@^1.0.3:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.0.tgz#9f8a376eb00bc712115abff4420318a0063fa796"

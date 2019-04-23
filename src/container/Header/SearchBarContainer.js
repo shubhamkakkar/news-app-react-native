@@ -1,14 +1,13 @@
-import React, { Component } from "react"
+import React, { Component, Fragment } from "react"
 import {
     View, Text, Container, Item, Input,
 } from "native-base";
-import { Modal, TouchableOpacity, ScrollView } from "react-native"
+import { Modal, TouchableOpacity, ScrollView, Keyboard, TextInput } from "react-native"
 import searchJSON from "../../api/countryJSON/searchData.json"
 import CountryCodePicker from "../../components/CountryCodePicker/CountryCodePicker"
 import CategoryPicker from "../../components/CategoryPicker/CategoryPicker"
 import ModalCloser from "../../components/ModalCloser/ModalCloser.js";
 import HeaderComponent from "../../components/Header/Header"
-
 const ModalHOc = props => (
     <Modal
         animationType="slide"
@@ -26,6 +25,7 @@ class SearchBarContainer extends Component {
         country: [],
         countryCodeModalOpen: false,
         categoryModalOpen: false,
+        hideWithKeyboard: false
     }
 
     componentWillMount() {
@@ -33,6 +33,21 @@ class SearchBarContainer extends Component {
             country: searchJSON.countryCodeAndName,
             category: searchJSON.category
         })
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    }
+
+    componentWillUnmount() {
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
+    }
+    _keyboardDidShow = () => {
+        this.setState({ hideWithKeyboard: true })
+    }
+
+    _keyboardDidHide = () => {
+        this.setState({ hideWithKeyboard: false })
+
     }
 
     handleButtons = res => {
@@ -63,75 +78,95 @@ class SearchBarContainer extends Component {
                 <HeaderComponent title={"Search"} />
                 <View style={{
                     flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-                    {
-                        [
-                            "Top Headlines", "All Stories"
-                        ].map((res, index) => (
-                            <View key={res}>
-                                <TouchableOpacity
-                                    style={{
-                                        marginBottom: 10,
-                                        backgroundColor: "#3d5afe",
-                                        borderColor: "#3d5afe",
-                                        borderRadius: 25,
-                                        alignItems: 'center',
-                                        justifyContent: "center"
-                                    }}
-                                    onPress={() => this.handleButtons(index)}
-                                >
-                                    <Text style={{
-                                        color: "white",
-                                        padding: 10,
-                                    }}>  {res} </Text>
-                                </TouchableOpacity>
-                            </View>
-                        ))
-                    }
-
-                </View>
-                <View style={{
-                    flex: 1,
                     justifyContent: 'center',
                     margin: 30
                 }}>
-                    <Item rounded>
-                        <Input placeholder='Rounded Textbox' />
-                    </Item>
+                    {/* <Item rounded> */}
+                    <TextInput
+                        underlineColorAndroid="transparent"
+                        placeholder=" Search: bitcoin, shahrukh khan, trump.."
+                        placeholderTextColor="#3d5afe"
+                        autoCapitalize="none"
+                        style={{
+                            margin: 15,
+                            height: 40,
+                            borderColor: "#3d5afe",
+                            borderWidth: 1,
+                            borderRadius: 20,
+                            padding: 5
+                        }}
+                        onSubmitEditing={Keyboard.dismiss} />
+                    {/* </Item> */}
                 </View>
-                <View style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-                    {
-                        [
-                            "Country", "Category"
-                        ].map(res => (
-                            <View key={res}>
-                                <TouchableOpacity
-                                    style={{
-                                        marginBottom: 10,
-                                        backgroundColor: "#3d5afe",
-                                        borderColor: "#3d5afe",
-                                        borderRadius: 25,
-                                        justifyContent: 'center',
-                                        alignItems: "center"
-                                    }}
-                                    onPress={() => this.handleButtons(res)}
-                                >
-                                    <Text style={{
-                                        color: "white",
-                                        padding: 10,
-                                    }}> Select {res} </Text>
-                                </TouchableOpacity>
-                            </View>
-                        ))
-                    }
+                {
+                    this.state.hideWithKeyboard
+                        ? null
+                        : (
+                            <Fragment>
+                                <View style={{
+                                    flex: 1,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}>
+                                    {
+                                        [
+                                            "Top Headlines", "All Stories"
+                                        ].map((res, index) => (
+                                            <View key={res}>
+                                                <TouchableOpacity
+                                                    style={{
+                                                        marginBottom: 10,
+                                                        backgroundColor: "#3d5afe",
+                                                        borderColor: "#3d5afe",
+                                                        borderRadius: 25,
+                                                        alignItems: 'center',
+                                                        justifyContent: "center"
+                                                    }}
+                                                    onPress={() => this.handleButtons(index)}
+                                                >
+                                                    <Text style={{
+                                                        color: "white",
+                                                        padding: 10,
+                                                    }}> {res} </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        ))
+                                    }
 
-                </View>
+                                </View>
+                                <View style={{
+                                    flex: 1,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}>
+                                    {
+                                        [
+                                            "Country", "Category"
+                                        ].map(res => (
+                                            <View key={res}>
+                                                <TouchableOpacity
+                                                    style={{
+                                                        marginBottom: 10,
+                                                        backgroundColor: "#3d5afe",
+                                                        borderColor: "#3d5afe",
+                                                        borderRadius: 25,
+                                                        justifyContent: 'center',
+                                                        alignItems: "center"
+                                                    }}
+                                                    onPress={() => this.handleButtons(res)}
+                                                >
+                                                    <Text style={{
+                                                        color: "white",
+                                                        padding: 10,
+                                                    }}> Select {res} </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        ))
+                                    }
+                                </View>
+                            </Fragment>
+                        )
+                }
                 <ModalHOc visible={this.state.countryCodeModalOpen} handleClose={this.handleClose}>
                     <ScrollView style={{ flexGrow: 1 }}>
                         <CountryCodePicker country={this.state.country} />
