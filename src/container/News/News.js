@@ -85,11 +85,21 @@ class News extends Component {
                                 justifyContent: 'center',
                             }}>
                                 <View>
-                                    <Button style={{ margin: 2, backgroundColor: "#f50057", borderColor: "#f50057" }} bordered rounded onPress={() => this.setStateForTopNews()}>
-                                        <TouchableOpacity>
-                                            <Text style={{ color: "white" }}> Click to start reading </Text>
-                                        </TouchableOpacity>
-                                    </Button>
+                                    <TouchableOpacity
+                                        style={{
+                                            marginBottom: 10,
+                                            backgroundColor: "#f50057",
+                                            borderColor: "#f50057",
+                                            borderRadius: 25,
+                                            justifyContent: 'center',
+                                            alignItems: "center"
+                                        }}
+                                        onPress={() => this.setStateForTopNews()}
+                                    >
+                                        <Text style={{
+                                            color: "white", padding: 10,
+                                        }}> Click to start reading </Text>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
 

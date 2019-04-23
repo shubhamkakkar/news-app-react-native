@@ -1,6 +1,12 @@
 import React, { Fragment, Component } from 'react'
 import { Container, Text } from "native-base"
-import { View, TouchableOpacity, Image } from "react-native"
+import {
+    View,
+    TouchableOpacity,
+    Image,
+    BackHandler,
+    ToastAndroid,
+} from "react-native"
 import { connect } from "react-redux"
 import { quest, query } from "../../store/actions"
 import readingImage from "../../assets/readingImage.png"
@@ -10,6 +16,7 @@ import ModalHOC from "../../components/ModalHOC/ModalHOC"
 import CountryCodePicker from "../../components/CountryCodePicker/CountryCodePicker"
 import CategoryPicker from "../../components/CategoryPicker/CategoryPicker"
 import ModalCloser from "../../components/ModalCloser/ModalCloser";
+import { NavigationActions, withNavigation, StackActions } from 'react-navigation'
 
 class DefaultSelections extends Component {
     state = {
@@ -23,6 +30,19 @@ class DefaultSelections extends Component {
             country: searchJSON.countryCodeAndName,
             category: searchJSON.category
         })
+    }
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+    }
+
+
+    handleBackButton = () => {
+
+        const pushAction = StackActions.push({
+            routeName: 'DefaultSelections',
+        });
+
+        this.props.navigation.dispatch(pushAction);
     }
     skip = () => {
         this.props.setQuest("everything")
@@ -110,4 +130,4 @@ const mapDispatchToProps = dispatch => ({
     setQuest: everything => dispatch(quest(everything)),
     setDefaultQuery: query_parameter => dispatch(query(query_parameter))
 })
-export default connect(null, mapDispatchToProps)(DefaultSelections)
+export default withNavigation(connect(null, mapDispatchToProps)(DefaultSelections))

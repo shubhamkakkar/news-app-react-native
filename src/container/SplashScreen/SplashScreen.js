@@ -12,6 +12,11 @@ class SplashScreen extends Component {
 
         this.props.navigation.navigate(defaultSelections ? 'NewsContainer' : 'DefaultSelections');
     }
+
+    componentDidMount() {
+        this._bootstrapAsync()
+    }
+
     render() {
         return (
             <Container>
