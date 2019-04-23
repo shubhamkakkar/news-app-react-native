@@ -164,13 +164,14 @@ class SearchBarContainer extends Component {
                                         ))
                                     }
                                 </View>
+                                <ModalCloser handleClose={this.props.handleClose} />
                             </Fragment>
                         )
                 }
                 <ModalHOc visible={this.state.countryCodeModalOpen} handleClose={this.handleClose}>
-                    <ScrollView style={{ flexGrow: 1 }}>
+                    <View style={{ flexGrow: 1 }}>
                         <CountryCodePicker country={this.state.country} />
-                    </ScrollView>
+                    </View>
                     <ModalCloser handleClose={this.handleClose} />
                 </ModalHOc>
                 <ModalHOc visible={this.state.categoryModalOpen} handleClose={this.handleClose}>

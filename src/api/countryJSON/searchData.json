@@ -2,23 +2,23 @@
     "countryCodeAndName": [
         {
             "code": "ae",
-            "country": "United Arab"
+            "label": "United Arab"
         },
         {
             "code": "us",
-            "country": "USA"
+            "label": "USA"
         },
         {
             "code": "in",
-            "country": "India"
+            "label": "India"
         },
         {
             "code": "ma",
-            "country": "Morocco"
+            "label": "Morocco"
         },
         {
             "code": "nz",
-            "country": "New Zealand"
+            "label": "New Zealand"
         }
     ],
     "category": [

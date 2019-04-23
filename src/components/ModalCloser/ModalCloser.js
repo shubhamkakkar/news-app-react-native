@@ -1,8 +1,8 @@
 import React from "react"
-import { View, Text } from "native-base"
+import { View, Icon } from "native-base"
 import { TouchableOpacity } from "react-native"
 export default props => (
-    <View style={{ flexDirection: "row", justifyContent: "center", alignContent: "center", margin: 5, backgroundColor: "#FAFAFA" }}>
+    <View style={{ flexDirection: "row", justifyContent: "center", alignContent: "center", marginTop: 2.5, marginBottom: 2.5, backgroundColor: "#FAFAFA" }}>
         <TouchableOpacity
             style={{
                 width: 50,
@@ -16,7 +16,7 @@ export default props => (
             }}
             onPress={props.handleClose}
         >
-            <Text style={{ color: "white" }}>X</Text>
+            <Icon name='arrow-back' style={{ color: "white", fontSize: 20 }} />
         </TouchableOpacity>
     </View>
 )

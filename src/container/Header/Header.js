@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from "react"
-import { Modal, Alert, View, ScrollView, TouchableOpacity } from 'react-native'
-import { Header, Left, Body, Right, Button, Icon, Title, Text } from 'native-base';
+import { Modal, View } from 'react-native'
+import { Right, Button, Icon } from 'native-base';
 import SearchBarContainer from "./SearchBarContainer"
-import ModalCloser from "../../components/ModalCloser/ModalCloser"
 import HeaderComponent from "../../components/Header/Header"
 class HeaderNav extends Component {
 
@@ -39,9 +38,8 @@ class HeaderNav extends Component {
                 >
                     <View style={{ flex: 1, justifyContent: "center", alignContent: "center" }}>
                         <View style={{ flexGrow: 1 }}>
-                            <SearchBarContainer />
+                            <SearchBarContainer handleClose={this.handleClose} />
                         </View>
-                        <ModalCloser handleClose={this.handleClose} />
                     </View>
                 </Modal>
             </Fragment>

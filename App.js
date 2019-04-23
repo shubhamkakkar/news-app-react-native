@@ -1,9 +1,12 @@
 import React, { Component, Fragment } from "react"
 import Header from "./src/container/Header/Header"
 import News from "./src/container/News/News"
-
+import DefaultSelections from "./src/container/DefaultSelections/DefaultSelections"
 import configureStore from "./src/store/storeIndex";
+import SplashScreen from "./src/container/SplashScreen/SplashScreen"
 import { Provider } from 'react-redux';
+
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
 const store = configureStore()
 store.subscribe(() => {
@@ -11,7 +14,8 @@ store.subscribe(() => {
   console.log(stores)
 
 })
-export default class App extends Component {
+
+class NewsContainer extends Component {
   render() {
     return (
       <Provider store={store}>
@@ -24,3 +28,11 @@ export default class App extends Component {
     )
   }
 }
+
+const AppNavigator = createStackNavigator({
+  SplashScreen,
+  DefaultSelections,
+  NewsContainer
+});
+
+export default createAppContainer(AppNavigator);  
