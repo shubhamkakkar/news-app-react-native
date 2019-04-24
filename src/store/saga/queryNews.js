@@ -8,9 +8,9 @@ const getQueryParameter = state => state.queryReducer
 const getloadBool = state => state.stopLoadNews
 
 function* handleQuerySaga() {
-    const queryParamter = yield select(getQueryParameter)
-    console.log(queryParamter)
-    const news = yield call(newHeadlines_q, queryParamter)
+    const queryParameter = yield select(getQueryParameter)
+    console.log(queryParameter)
+    const news = yield call(newHeadlines_q, queryParameter)
     yield put(querySaga(news))
 }
 

@@ -5,7 +5,6 @@ import {
     TouchableOpacity,
     Image,
     BackHandler,
-    ToastAndroid,
 } from "react-native"
 import { connect } from "react-redux"
 import { quest, query, setTopHeadlines } from "../../store/actions"
@@ -24,6 +23,11 @@ class DefaultSelections extends Component {
         category: [],
         countryCodeModalOpen: false,
         categoryModalOpen: false,
+        queryObj: {
+            category: undefined,
+            country: undefined,
+            queryParameter: undefined
+        }
     }
     componentWillMount() {
         this.setState({
@@ -44,36 +48,49 @@ class DefaultSelections extends Component {
         this.props.navigation.dispatch(pushAction);
     }
     skip = () => {
-        this.props.setQuest("everything")
-        this.props.loadNews()
-        if (!this.props.queryReducer.length) {
-            this.props.setDefaultQuery(["trump"])
-
+        let queryObj = {
+            category: undefined,
+            country: undefined,
+            queryParameter: "trump"
         }
-        this.props.navigation.navigate("NewsContainer")
+        const { setQuest, loadNews, setDefaultQuery, navigation } = this.props
+        setQuest("everything")
+        setDefaultQuery(queryObj)
+        loadNews()
+        navigation.navigate("NewsContainer")
     }
 
     handleClose = () => this.setState({ categoryModalOpen: false, countryCodeModalOpen: false })
 
-
     sendToRedux = (index, choice) => {
-        this.props.setQuest("top-headlines")
-        let queryP = []
+        const { setQuest, setDefaultQuery, questReducer } = this.props
+        let { queryObj, country, category } = this.state
         switch (choice) {
             case "country": {
-                queryP = [...queryP, this.state.country[index].code]
+                queryObj = {
+                    ...queryObj,
+                    country: country[index].code
+                }
+                this.setState({ queryObj })
                 break;
             }
             case "category": {
-                queryP = [...queryP, this.state.category[index].label]
+                queryObj = {
+                    ...queryObj,
+                    category: category[index].label
+                }
+                this.setState({ queryObj })
                 break;
             }
             default: {
                 return 0
             }
         }
+        if (!questReducer.length) {
+            setQuest("everything")
+        }
+        setDefaultQuery(queryObj)
         this.handleClose()
-        this.props.setDefaultQuery(queryP)
     }
 
     handleButtons = button => {
@@ -129,7 +146,7 @@ class DefaultSelections extends Component {
                         onPress={this.skip}
                     >
                         {
-                            this.props.queryReducer.length
+                            this.props.queryReducer.category || this.props.queryReducer.country
                                 ? (
                                     <Text style={{
                                         color: "#f50057",
@@ -166,8 +183,8 @@ class DefaultSelections extends Component {
     }
 }
 
-const mapStateToProps = ({ queryReducer }) => ({
-    queryReducer
+const mapStateToProps = ({ queryReducer, questReducer }) => ({
+    queryReducer, questReducer
 })
 const mapDispatchToProps = dispatch => ({
     setQuest: everything_topheadlins => dispatch(quest(everything_topheadlins)),

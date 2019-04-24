@@ -1,0 +1,23 @@
+todo = {
+    search query parameter dynammic set into redux
+    profile sections : {
+        ui of profile section
+        place a human button on header intead of making a drawer
+        set default search query, category and country --- atleast one of it
+        saveButton {
+                default set from defaultSelection list should be displayed in the 
+                profile section with obviou option to update it there as well
+
+                saveButton will send this to redux and async storage,
+                naming of asyncStorage item setItem(""), is in the splash screen
+        }
+    }
+}
+
+further todo = {
+    maintain a record o searched query in the async storage for suggestion purposes
+    a cross button to remove it from there only -- remove from async as well
+    option in profile to maintian the search history -- could be updated
+    depending on the searchHistory save boolean, add logic in splashscreen to fetch from async storage or not
+
+}

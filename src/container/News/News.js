@@ -1,9 +1,13 @@
 import React, { Component, Fragment } from 'react'
-import { View, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native'
+import {
+    View, ActivityIndicator, FlatList,
+    BackHandler, TouchableOpacity
+} from 'react-native'
 import { Text, Button } from 'native-base';
 import { connect } from "react-redux"
 import NewsHOC from "../../components/News/News"
 import { setTopHeadlines, stopLoadNews, querySaga, query } from "../../store/actions"
+import { withNavigation, StackActions } from 'react-navigation'
 class News extends Component {
     state = {
         topheadliners: [],
@@ -11,7 +15,6 @@ class News extends Component {
     }
 
     setStateForTopNews = () => {
-        console.log("in here")
         this.props.loadTopNews()
         const combinedTopHeadlinersSubArrays = []
         this.props.topHeadlineReducer.map(parentAr => parentAr.map(ar => combinedTopHeadlinersSubArrays.push(ar)))
@@ -29,18 +32,21 @@ class News extends Component {
 
     componentDidMount() {
         this.setStateForTopNews()
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+    }
 
+    handleBackButton = () => {
+        const pushAction = StackActions.push({
+            routeName: 'NewsContainer'
+        });
+
+        this.props.navigation.dispatch(pushAction);
     }
 
     componentWillReceiveProps() {
         if (!this.state.topheadliners.length) {
             this.setStateForTopNews()
         }
-    }
-
-    componentDidUpdate() {
-        console.log(this.state)
-
     }
     _KeyExtractor = (item, index) => index.toString()
 
@@ -119,4 +125,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(News)
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(News))

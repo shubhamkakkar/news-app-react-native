@@ -17,7 +17,11 @@ const stopLoadNews = () => ({
 
 const query = query => ({
     type: QUERY,
-    query
+    queryObj: {
+        queryParameter: query.queryParameter,
+        category: query.category,
+        country: query.country
+    }
 })
 const querySaga = news_q => ({
     type: QUERY_SAGA,

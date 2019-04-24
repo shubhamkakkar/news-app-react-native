@@ -1,8 +1,14 @@
 import { QUERY, QUERY_SAGA } from "../actions"
 
-export const queryReducer = (state = [], action) => {
+let initialState = {
+    queryParameter: undefined,
+    category: undefined,
+    country: undefined
+}
+
+export const queryReducer = (state = initialState, action) => {
     if (action.type === QUERY) {
-        return [...state, ...action.query]
+        return action.queryObj
     } else {
         return state
     }
