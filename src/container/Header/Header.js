@@ -3,6 +3,7 @@ import { Modal, View } from 'react-native'
 import { Right, Button, Icon } from 'native-base';
 import SearchBarContainer from "./SearchBarContainer"
 import HeaderComponent from "../../components/Header/Header"
+import { TouchableOpacity } from "react-native-gesture-handler";
 class HeaderNav extends Component {
 
     state = {
@@ -21,14 +22,14 @@ class HeaderNav extends Component {
         return (
             <Fragment>
                 <HeaderComponent title={"News"}>
-                    <Right>
-                        <Button transparent onPress={this.search}>
-                            <Icon name='search' />
-                        </Button>
-                        <Button transparent onPress={this.saveToBookmark}>
-                            <Icon name='heart' />
-                        </Button>
-                    </Right>
+                    <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "flex-end", paddingRight: 5 }}>
+                        <TouchableOpacity style={{ backgroundColor: "#3d5afe" }} onPress={this.search}>
+                            <Icon name='search' style={{ color: "white" }} />
+                        </TouchableOpacity>
+                        {/* <TouchableOpacity style={{ backgroundColor: "#3d5afe" }} onPress={this.saveToBookmark}>
+                            <Icon name='heart' style={{ color: "white" }} />
+                        </TouchableOpacity> */}
+                    </View>
                 </HeaderComponent>
                 <Modal
                     animationType="slide"

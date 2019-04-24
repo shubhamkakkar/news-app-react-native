@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react"
 import {
     View, Text, Container, Item, Input,
 } from "native-base";
-import { Modal, TouchableOpacity, ScrollView, Keyboard, TextInput } from "react-native"
+import { Modal, TouchableOpacity, ToastAndroid, Keyboard, TextInput } from "react-native"
 import searchJSON from "../../api/countryJSON/searchData.json"
 import CountryCodePicker from "../../components/CountryCodePicker/CountryCodePicker"
 import CategoryPicker from "../../components/CategoryPicker/CategoryPicker"
@@ -10,6 +10,8 @@ import ModalCloser from "../../components/ModalCloser/ModalCloser";
 import HeaderComponent from "../../components/Header/Header"
 import DefaultSelectionAndSearchCommon from "../../components/DefaultSelectionAndSearchCommon/DefaultSelectionAndSearchCommon"
 import ModalHOC from "../../components/ModalHOC/ModalHOC"
+import { connect } from "react-redux"
+import { quest, query, setTopHeadlines } from "../../store/actions"
 class SearchBarContainer extends Component {
 
     state = {
@@ -43,6 +45,7 @@ class SearchBarContainer extends Component {
     }
 
     handleButtons = res => {
+        const { setQuest, questReducer } = this.props
         switch (res) {
             case "Country": {
                 this.setState({ countryCodeModalOpen: true })
@@ -53,12 +56,40 @@ class SearchBarContainer extends Component {
                 break;
             }
             case "Top Headlines": {
+                if (questReducer !== "top-headlines") {
+                    setQuest("top-headlines")
+                }
+                ToastAndroid.show("top headlines will be shown")
                 break;
             }
             case "All Stories": {
+                if (questReducer !== "everything") {
+                    setQuest("everything")
+                }
+                ToastAndroid.show("all stories will be shown")
                 break;
             }
         }
+    }
+
+    sendToRedux = (index, choice) => {
+        this.props.setQuest("top-headlines")
+        let queryP = []
+        switch (choice) {
+            case "country": {
+                queryP = [...queryP, this.state.country[index].code]
+                break;
+            }
+            case "category": {
+                queryP = [...queryP, this.state.category[index].label]
+                break;
+            }
+            default: {
+                return 0
+            }
+        }
+        this.handleClose()
+        this.props.setDefaultQuery(queryP)
     }
 
     handleClose = () => this.setState({ categoryModalOpen: false, countryCodeModalOpen: false })
@@ -103,7 +134,7 @@ class SearchBarContainer extends Component {
                                     {
                                         [
                                             "Top Headlines", "All Stories"
-                                        ].map((res, index) => (
+                                        ].map(res => (
                                             <View key={res}>
                                                 <TouchableOpacity
                                                     style={{
@@ -114,7 +145,7 @@ class SearchBarContainer extends Component {
                                                         alignItems: 'center',
                                                         justifyContent: "center"
                                                     }}
-                                                    onPress={() => this.handleButtons(index)}
+                                                    onPress={() => this.handleButtons(res)}
                                                 >
                                                     <Text style={{
                                                         color: "white",
@@ -133,13 +164,13 @@ class SearchBarContainer extends Component {
                 }
                 <ModalHOC visible={this.state.countryCodeModalOpen} handleClose={this.handleClose}>
                     <View style={{ flexGrow: 1 }}>
-                        <CountryCodePicker country={this.state.country} />
+                        <CountryCodePicker sendToRedux={this.sendToRedux} country={this.state.country} />
                     </View>
                     <ModalCloser handleClose={this.handleClose} />
                 </ModalHOC>
                 <ModalHOC visible={this.state.categoryModalOpen} handleClose={this.handleClose}>
                     <View style={{ flexGrow: 1 }}>
-                        <CategoryPicker category={this.state.category} />
+                        <CategoryPicker sendToRedux={this.sendToRedux} category={this.state.category} />
                     </View>
                     <ModalCloser handleClose={this.handleClose} />
                 </ModalHOC>
@@ -147,4 +178,13 @@ class SearchBarContainer extends Component {
         )
     }
 }
-export default SearchBarContainer
+
+const mapStateToProps = ({ queryReducer, questReducer }) => ({
+    queryReducer, questReducer
+})
+const mapDispatchToProps = dispatch => ({
+    setQuest: everything_topheadlins => dispatch(quest(everything_topheadlins)),
+    setDefaultQuery: query_parameter => dispatch(query(query_parameter)),
+    loadNews: () => dispatch(setTopHeadlines())
+})
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBarContainer)

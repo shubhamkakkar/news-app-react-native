@@ -96,14 +96,13 @@ class DefaultSelections extends Component {
     render() {
         return (
             <Fragment>
-                <Container style={{ backgroundColor: "#F9F8FD", }}>
+                <Container>
                     <View style={{
                         flex: 1, justifyContent: "center", alignItems: "center",
                     }} />
                     <View
                         style={{
-                            flex: 2,
-                            backgroundColor: "#F9F8FD",
+                            flex: 2
                         }}>
                         <Image source={readingImage} style={{ height: 50, width: null, flex: 1 }} />
                     </View>

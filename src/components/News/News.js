@@ -5,8 +5,8 @@ export default props => (
     <ScrollView style={{ flexGrow: 1 }} nestedScrollEnabled={true}>
         <Content padder>
             <TouchableOpacity onPress={() => Linking.openURL(props.url)}>
-                <Card style={{ flex: 0, borderRadius: 8, backgroundColor: "#F9F8FD" }}>
-                    <CardItem bordered style={{ borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
+                <Card style={{ flex: 0, borderRadius: 8 }}>
+                    <CardItem style={{ borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
                         <Left>
                             <Body>
                                 <Text style={{ color: '#3d5afe' }}>{
@@ -34,7 +34,7 @@ export default props => (
                         </View>
                     </CardItem>
                     <Left>
-                        <Button transparent >
+                        <Button transparent>
                             <Text style={{ color: '#3d5afe' }}>{props.sourceName}</Text>
                         </Button>
                     </Left>

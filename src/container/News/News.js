@@ -64,29 +64,33 @@ class News extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{
+                flex: 1, backgroundColor: "#F9F8FD"
+            }}>
                 {
-                    this.state.topheadliners.length ? (
-                        <Fragment>
-                            <FlatList
-                                data={this.state.topheadliners}
-                                extraData={this.state}
-                                keyExtractor={this._keyExtractor}
-                                renderItem={this._renderItem}
-                                ref={(ref) => { this.listRef = ref; }}
-                                onEndReached={this.onEndReached}
-                            />
-                            <View style={{
-                                flexDirection: "row", justifyContent: "center", backgroundColor: "#FAFAFA"
-                            }}>
-                                <Button style={{ margin: 2, backgroundColor: "#3d5afe" }} rounded onPress={() => this.setStateForTopNews()}>
-                                    <TouchableOpacity>
-                                        <Text primary>Load More</Text>
-                                    </TouchableOpacity>
-                                </Button>
-                            </View>
-                        </Fragment>
-                    ) : (
+                    this.state.topheadliners.length
+                        ? (
+                            <Fragment>
+                                <FlatList
+                                    data={this.state.topheadliners}
+                                    extraData={this.state}
+                                    keyExtractor={this._keyExtractor}
+                                    renderItem={this._renderItem}
+                                    ref={(ref) => { this.listRef = ref; }}
+                                    onEndReached={this.onEndReached}
+                                />
+                                <View style={{
+                                    flexDirection: "row", justifyContent: "center", backgroundColor: "#FAFAFA"
+                                }}>
+                                    <Button style={{ margin: 2, backgroundColor: "#3d5afe" }} rounded onPress={() => this.setStateForTopNews()}>
+                                        <TouchableOpacity>
+                                            <Text primary>Load More</Text>
+                                        </TouchableOpacity>
+                                    </Button>
+                                </View>
+                            </Fragment>
+                        )
+                        : (
                             <View style={{
                                 flex: 1,
                                 alignItems: 'center',
