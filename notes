@@ -1,5 +1,5 @@
 todo = {
-    search query parameter dynammic set into redux
+    update saga
     profile sections : {
         ui of profile section
         place a human button on header intead of making a drawer

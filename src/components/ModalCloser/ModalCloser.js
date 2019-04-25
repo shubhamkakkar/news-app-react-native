@@ -1,8 +1,22 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { View, Icon } from "native-base"
 import { TouchableOpacity } from "react-native"
 export default props => (
-    <View style={{ flexDirection: "row", justifyContent: "center", alignContent: "center", marginTop: 2.5, marginBottom: 2.5, backgroundColor: "#FAFAFA" }}>
+    <View style={{
+        // flex: 1,
+        flexDirection: "row",
+        // justifyContent: props.justifyModalContentSpaceAround ? "space-between" : "center",
+        justifyContent: "space-around",
+        alignContent: "center",
+        marginTop: 2.5,
+        marginBottom: 2.5,
+        backgroundColor: "#FAFAFA",
+        paddingLeft: 5,
+        paddingRight: 5,
+    }}>
+        <Fragment>
+            {props.children}
+        </Fragment>
         <TouchableOpacity
             style={{
                 width: 50,

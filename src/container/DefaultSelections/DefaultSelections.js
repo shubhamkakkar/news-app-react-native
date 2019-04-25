@@ -6,16 +6,20 @@ import {
     Image,
     BackHandler,
 } from "react-native"
+import { withNavigation, StackActions } from 'react-navigation'
+
 import { connect } from "react-redux"
 import { quest, query, setTopHeadlines } from "../../store/actions"
+
 import readingImage from "../../assets/readingImage.png"
-import DefaultSelectionAndSearchCommon from "../../components/DefaultSelectionAndSearchCommon/DefaultSelectionAndSearchCommon"
+
 import searchJSON from "../../api/countryJSON/searchData.json"
+
+import DefaultSelectionAndSearchCommon from "../../components/DefaultSelectionAndSearchCommon/DefaultSelectionAndSearchCommon"
 import ModalHOC from "../../components/ModalHOC/ModalHOC"
 import CountryCodePicker from "../../components/CountryCodePicker/CountryCodePicker"
 import CategoryPicker from "../../components/CategoryPicker/CategoryPicker"
 import ModalCloser from "../../components/ModalCloser/ModalCloser";
-import { withNavigation, StackActions } from 'react-navigation'
 
 class DefaultSelections extends Component {
     state = {

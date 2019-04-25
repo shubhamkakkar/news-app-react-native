@@ -1,17 +1,21 @@
 import React, { Component, Fragment } from "react"
+import { TouchableOpacity, ToastAndroid, Keyboard, TextInput } from "react-native"
 import {
-    View, Text, Container, Item, Input,
+    View, Text, Container
 } from "native-base";
-import { Modal, TouchableOpacity, ToastAndroid, Keyboard, TextInput } from "react-native"
+
+import { connect } from "react-redux"
+import { quest, query, setTopHeadlines } from "../../store/actions"
+
 import searchJSON from "../../api/countryJSON/searchData.json"
+
 import CountryCodePicker from "../../components/CountryCodePicker/CountryCodePicker"
 import CategoryPicker from "../../components/CategoryPicker/CategoryPicker"
 import ModalCloser from "../../components/ModalCloser/ModalCloser";
 import HeaderComponent from "../../components/Header/Header"
 import DefaultSelectionAndSearchCommon from "../../components/DefaultSelectionAndSearchCommon/DefaultSelectionAndSearchCommon"
 import ModalHOC from "../../components/ModalHOC/ModalHOC"
-import { connect } from "react-redux"
-import { quest, query, setTopHeadlines } from "../../store/actions"
+
 class SearchBarContainer extends Component {
 
     state = {
@@ -19,7 +23,12 @@ class SearchBarContainer extends Component {
         category: [],
         countryCodeModalOpen: false,
         categoryModalOpen: false,
-        hideWithKeyboard: false
+        hideWithKeyboard: false,
+        queryObj: {
+            category: undefined,
+            country: undefined,
+            queryParameter: undefined
+        }
     }
 
     componentWillMount() {
@@ -73,29 +82,64 @@ class SearchBarContainer extends Component {
     }
 
     sendToRedux = (index, choice) => {
-        this.props.setQuest("top-headlines")
-        let queryP = []
+        const { setQuest, questReducer } = this.props
+        let { queryObj, country, category } = this.state
         switch (choice) {
             case "country": {
-                queryP = [...queryP, this.state.country[index].code]
+                queryObj = {
+                    ...queryObj,
+                    country: country[index].code
+                }
+                this.setState({ queryObj })
                 break;
             }
             case "category": {
-                queryP = [...queryP, this.state.category[index].label]
+                queryObj = {
+                    ...queryObj,
+                    category: category[index].label
+                }
+                this.setState({ queryObj })
                 break;
             }
             default: {
                 return 0
             }
         }
+        if (!questReducer.length) {
+            setQuest("everything")
+        }
         this.handleClose()
-        this.props.setDefaultQuery(queryP)
     }
 
     handleClose = () => this.setState({ categoryModalOpen: false, countryCodeModalOpen: false })
 
+    handleQueryInput = text => {
+        let { queryObj } = this.state
+        if (text.trim().length) {
+            queryObj = {
+                ...queryObj,
+                queryParameter: text
+            }
+            this.setState({ queryObj })
+        } else {
+            queryObj = {
+                ...queryObj,
+                queryParameter: ""
+            }
+            this.setState({ queryObj })
+        }
+    }
+
+    loadCustomNews = () => this.props.setDefaultQuery(this.state.queryObj)
 
     render() {
+        const {
+            category, categoryModalOpen,
+            country, countryCodeModalOpen,
+            hideWithKeyboard,
+            queryObj
+        } = this.state
+
         return (
             <Container>
                 <HeaderComponent title={"Search"} />
@@ -104,7 +148,6 @@ class SearchBarContainer extends Component {
                     justifyContent: 'center',
                     margin: 30
                 }}>
-                    {/* <Item rounded> */}
                     <TextInput
                         underlineColorAndroid="transparent"
                         placeholder=" Search: bitcoin, shahrukh khan, trump.."
@@ -118,11 +161,11 @@ class SearchBarContainer extends Component {
                             borderRadius: 20,
                             padding: 5
                         }}
+                        onChangeText={text => this.handleQueryInput(text)}
                         onSubmitEditing={Keyboard.dismiss} />
-                    {/* </Item> */}
                 </View>
                 {
-                    this.state.hideWithKeyboard
+                    hideWithKeyboard
                         ? null
                         : (
                             <Fragment>
@@ -158,19 +201,45 @@ class SearchBarContainer extends Component {
 
                                 </View>
                                 <DefaultSelectionAndSearchCommon handleButtons={this.handleButtons} />
-                                <ModalCloser handleClose={this.props.handleClose} />
+                                <ModalCloser
+                                    handleClose={this.props.handleClose}
+                                    justifyModalContentSpaceAround={false} >
+                                    {
+                                        queryObj.category || queryObj.country || queryObj.queryParameter
+                                            ? (
+                                                <TouchableOpacity
+                                                    style={{
+                                                        marginBottom: 5,
+                                                        marginTop: 5,
+                                                        backgroundColor: "#f50057",
+                                                        borderColor: "#f50057",
+                                                        borderRadius: 25,
+                                                        justifyContent: 'center',
+                                                        alignItems: "center"
+                                                    }}
+                                                    onPress={this.loadCustomNews}
+                                                >
+                                                    <Text style={{
+                                                        color: "white",
+                                                        padding: 10,
+                                                    }}> Submit </Text>
+                                                </TouchableOpacity>
+                                            )
+                                            : null
+                                    }
+                                </ModalCloser>
                             </Fragment>
                         )
                 }
-                <ModalHOC visible={this.state.countryCodeModalOpen} handleClose={this.handleClose}>
+                <ModalHOC visible={countryCodeModalOpen} handleClose={this.handleClose}>
                     <View style={{ flexGrow: 1 }}>
-                        <CountryCodePicker sendToRedux={this.sendToRedux} country={this.state.country} />
+                        <CountryCodePicker sendToRedux={this.sendToRedux} country={country} />
                     </View>
                     <ModalCloser handleClose={this.handleClose} />
                 </ModalHOC>
-                <ModalHOC visible={this.state.categoryModalOpen} handleClose={this.handleClose}>
+                <ModalHOC visible={categoryModalOpen} handleClose={this.handleClose}>
                     <View style={{ flexGrow: 1 }}>
-                        <CategoryPicker sendToRedux={this.sendToRedux} category={this.state.category} />
+                        <CategoryPicker sendToRedux={this.sendToRedux} category={category} />
                     </View>
                     <ModalCloser handleClose={this.handleClose} />
                 </ModalHOC>
