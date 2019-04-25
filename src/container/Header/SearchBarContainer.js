@@ -5,7 +5,7 @@ import {
 } from "native-base";
 
 import { connect } from "react-redux"
-import { quest, query, setTopHeadlines } from "../../store/actions"
+import { quest, query, setTopHeadlines, resetTopHeadliners } from "../../store/actions"
 
 import searchJSON from "../../api/countryJSON/searchData.json"
 
@@ -130,7 +130,12 @@ class SearchBarContainer extends Component {
         }
     }
 
-    loadCustomNews = () => this.props.setDefaultQuery(this.state.queryObj)
+    loadCustomNews = () => {
+        this.props.setDefaultQuery(this.state.queryObj)
+        const emptyArr = []
+        this.props.loadNews(emptyArr)
+        this.props.handleClose()
+    }
 
     render() {
         const {
@@ -254,6 +259,7 @@ const mapStateToProps = ({ queryReducer, questReducer }) => ({
 const mapDispatchToProps = dispatch => ({
     setQuest: everything_topheadlins => dispatch(quest(everything_topheadlins)),
     setDefaultQuery: query_parameter => dispatch(query(query_parameter)),
-    loadNews: () => dispatch(setTopHeadlines())
+    loadNews: news => dispatch(setTopHeadlines(news)),
+    resetTopHeadliners: () => dispatch(resetTopHeadliners())
 })
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBarContainer)

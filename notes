@@ -1,5 +1,5 @@
 todo = {
-    update saga
+    make a new saga and make a new redu for loadCustom news and inthisprops.newNews wold be ussed to render the  items and not the tthis.props.topHealnes news add some logic hat  i lodCstom news from searchContainer is triggered then 
     profile sections : {
         ui of profile section
         place a human button on header intead of making a drawer

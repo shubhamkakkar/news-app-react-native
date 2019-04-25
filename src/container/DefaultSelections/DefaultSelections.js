@@ -64,6 +64,8 @@ class DefaultSelections extends Component {
         navigation.navigate("NewsContainer")
     }
 
+
+
     handleClose = () => this.setState({ categoryModalOpen: false, countryCodeModalOpen: false })
 
     sendToRedux = (index, choice) => {

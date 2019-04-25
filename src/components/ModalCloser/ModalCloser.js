@@ -1,5 +1,5 @@
 import React, { Fragment } from "react"
-import { View, Icon } from "native-base"
+import { View, Text } from "native-base"
 import { TouchableOpacity } from "react-native"
 export default props => (
     <View style={{
@@ -31,7 +31,7 @@ export default props => (
             onPress={props.handleClose}
         >
             {/* arrow-back */}
-            <Icon name='arrow-back' style={{ color: "white", fontSize: 20 }} />
+            <Text style={{ color: "white", fontSize: 20 }}>X</Text>
         </TouchableOpacity>
     </View>
 )

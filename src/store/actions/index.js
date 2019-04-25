@@ -1,16 +1,19 @@
 const SET_TOP_HEADLINES = "SET_TOP_HEADLINES"
 const STOP_LOAD_NEWS = "STOP_LOAD_NEWS"
 
-const QUERY_SAGA = "QUERY_SAGA"
 const QUERY = "QUERY"
 
 const QUEST = "QUEST"
 
-const setTopHeadlines = news => ({
-    type: SET_TOP_HEADLINES,
-    news
+const RESET_TOP_HEADLINERS = "RESET_TOP_HEADLINERS"
 
-})
+const setTopHeadlines = news => {
+    console.log("in actions", news)
+    return {
+        type: SET_TOP_HEADLINES,
+        news
+    }
+}
 const stopLoadNews = () => ({
     type: STOP_LOAD_NEWS
 })
@@ -23,15 +26,17 @@ const query = query => ({
         country: query.country
     }
 })
-const querySaga = news_q => ({
-    type: QUERY_SAGA,
-    news_q
-})
 
 const quest = quest => ({
     type: QUEST,
     quest
 })
+const resetTopHeadliners = () => {
+    console.log("triggered")
+    return {
+        type: RESET_TOP_HEADLINERS
+    }
+}
 
 export {
     SET_TOP_HEADLINES,
@@ -40,9 +45,8 @@ export {
     stopLoadNews,
     QUERY,
     query,
-    QUERY_SAGA,
-    querySaga,
     QUEST,
-    quest
-
+    quest,
+    RESET_TOP_HEADLINERS,
+    resetTopHeadliners
 }

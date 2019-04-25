@@ -4,14 +4,17 @@ import {
     BackHandler, TouchableOpacity
 } from 'react-native'
 import { Text, Button } from 'native-base';
-import { connect } from "react-redux"
-import NewsHOC from "../../components/News/News"
-import { setTopHeadlines, stopLoadNews, querySaga, query } from "../../store/actions"
 import { withNavigation, StackActions } from 'react-navigation'
+
+import { connect } from "react-redux"
+import { setTopHeadlines, stopLoadNews, query } from "../../store/actions"
+
+import NewsHOC from "../../components/News/News"
 class News extends Component {
     state = {
         topheadliners: [],
-        showActivityIndicator: false
+        showActivityIndicator: false,
+        queryReducer: {}
     }
 
     setStateForTopNews = () => {
@@ -22,7 +25,8 @@ class News extends Component {
             topheadliners: [
                 ...this.state.topheadliners,
                 ...combinedTopHeadlinersSubArrays
-            ]
+            ],
+            queryReducer: this.props.queryReducer
         })
     }
 
@@ -35,17 +39,38 @@ class News extends Component {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     }
 
+    componentDidUpdate() {
+        if (
+            this.state.topheadliners.length === 0
+            &&
+            this.props.topHeadlineReducer.length
+        ) {
+            this.setStateForTopNews()
+        }
+        console.log(this.state)
+    }
+
     handleBackButton = () => {
         const pushAction = StackActions.push({
             routeName: 'NewsContainer'
         });
-
         this.props.navigation.dispatch(pushAction);
     }
 
     componentWillReceiveProps() {
         if (!this.state.topheadliners.length) {
             this.setStateForTopNews()
+        }
+        if (
+            this.state.queryReducer.category !== this.props.queryReducer.category
+            ||
+            this.state.queryReducer.country !== this.props.queryReducer.country
+            ||
+            this.state.queryReducer.queryParameter !== this.props.queryReducer.queryParameter
+        ) {
+            this.setState({ topheadliners: [], queryReducer: this.props.queryReducer }, () =>
+                this.setStateForTopNews()
+            )
         }
     }
     _KeyExtractor = (item, index) => index.toString()
@@ -79,11 +104,11 @@ class News extends Component {
                             <Fragment>
                                 <FlatList
                                     data={this.state.topheadliners}
-                                    extraData={this.state}
                                     keyExtractor={this._keyExtractor}
                                     renderItem={this._renderItem}
                                     ref={(ref) => { this.listRef = ref; }}
                                     onEndReached={this.onEndReached}
+                                    extraData={this.state.topheadliners}
                                 />
                                 <View style={{
                                     flexDirection: "row", justifyContent: "center", backgroundColor: "#FAFAFA"
@@ -112,8 +137,8 @@ class News extends Component {
         )
     }
 }
-const mapStateToProps = ({ topHeadlineReducer, queryNewsReducer }) => ({
-    topHeadlineReducer, queryNewsReducer
+const mapStateToProps = ({ topHeadlineReducer, queryReducer }) => ({
+    topHeadlineReducer, queryReducer
 })
 
 const mapDispatchToProps = dispatch => {

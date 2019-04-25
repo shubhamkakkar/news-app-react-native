@@ -1,12 +1,26 @@
-import { SET_TOP_HEADLINES } from "../actions/index"
+
+
+
+import { SET_TOP_HEADLINES, RESET_TOP_HEADLINERS } from "../actions/index"
 
 export const topHeadlineReducer = (state = [], action) => {
     if (action.news !== undefined) {
-        if (action.type === SET_TOP_HEADLINES) {
-            return [...state, action.news]
+        let news = action.news
+        if (news === []) {
+            console.log("in here")
+            return []
         } else {
-            return state
+            switch (action.type) {
+                case SET_TOP_HEADLINES: {
+                    console.log(news)
+                    return [...state, news]
+                }
+                default: {
+                    return state
+                }
+            }
         }
+
     } else {
         return state
     }

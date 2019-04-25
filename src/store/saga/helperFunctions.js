@@ -1,20 +1,33 @@
 import apiKey from "./credentials"
 import axios from "axios"
-const url = "https://newsapi.org/v2/"
+let url = "https://newsapi.org/v2/"
 
-export const newHeadlines = () => {
-    const request = axios.get(
-        `${url}top-headlines?country=us&apiKey=${apiKey}`,
-    )
-        .then(res => res.data.articles)
-        .catch(er => er)
-    return request
-}
+export const newHeadlines = obj => {
+    let querySet = undefined
+    const quest = obj[1]
+    const { queryParameter, category, country } = obj[0]
+    if (category && country && queryParameter) {
+        querySet = `category=${category}&country=${country}&q=${queryParameter}`
+    } else if (category && country && queryParameter === undefined) {
+        querySet = `country=${country}&category=${category}`
+    } else if (category && queryParameter && country === undefined) {
+        querySet = `category=${category}&q=${queryParameter}`
+    } else if (country && queryParameter && category === undefined) {
+        querySet = `country=${country}&q=${queryParameter}`
+    } else if (queryParameter && category === undefined && country === undefined) {
+        querySet = `q=${queryParameter}`
+    } else if (category && country === undefined && queryParameter === undefined) {
+        querySet = `category=${category}`
+    } else if (country && queryParameter === undefined && category === undefined) {
+        querySet = `country=${country}`
+    }
 
-export const newHeadlines_q = query => {
-    console.log(query)
+    // news api endpoint - everything only supports q
+    if (quest === "everything") {
+        querySet = `q=${queryParameter}`
+    }
     const request = axios.get(
-        `${url}everything?q=${query}&apiKey=${apiKey}`,
+        `${url}${quest}?${querySet}&apiKey=${apiKey}`,
     )
         .then(res => res.data.articles)
         .catch(er => er)
