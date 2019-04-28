@@ -8,10 +8,6 @@ const getloadBool = state => state.stopLoadNews
 const queryReducer = state => state.queryReducer
 const questReducer = state => state.questReducer
 
-function* handleTopHeadlines(queryObj) {
-
-}
-
 function* handleNews() {
     const QueryObj = yield select(queryReducer);
     const quest = yield select(questReducer);

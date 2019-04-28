@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import {
     View, ActivityIndicator, FlatList,
     BackHandler, TouchableOpacity
@@ -10,7 +10,7 @@ import { connect } from "react-redux"
 import { setTopHeadlines, stopLoadNews, query } from "../../store/actions"
 
 import NewsHOC from "../../components/News/News"
-class News extends Component {
+class News extends PureComponent {
     state = {
         topheadliners: [],
         showActivityIndicator: false,
@@ -47,7 +47,7 @@ class News extends Component {
         ) {
             this.setStateForTopNews()
         }
-        console.log(this.state)
+        // console.log(this.state)
     }
 
     handleBackButton = () => {
@@ -94,6 +94,7 @@ class News extends Component {
     }
 
     render() {
+        console.disableYellowBox = true;
         return (
             <View style={{
                 flex: 1, backgroundColor: "#F9F8FD"
@@ -111,7 +112,7 @@ class News extends Component {
                                     extraData={this.state.topheadliners}
                                 />
                                 <View style={{
-                                    flexDirection: "row", justifyContent: "center", backgroundColor: "#FAFAFA"
+                                    flexDirection: "row", justifyContent: "center", backgroundColor: "#F9F8FD"
                                 }}>
                                     <Button style={{ margin: 2, backgroundColor: "#3d5afe" }} rounded onPress={() => this.setStateForTopNews()}>
                                         <TouchableOpacity>

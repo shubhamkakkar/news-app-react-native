@@ -131,9 +131,8 @@ class SearchBarContainer extends Component {
     }
 
     loadCustomNews = () => {
+        this.props.resetTopHeadliners()
         this.props.setDefaultQuery(this.state.queryObj)
-        const emptyArr = []
-        this.props.loadNews(emptyArr)
         this.props.handleClose()
     }
 

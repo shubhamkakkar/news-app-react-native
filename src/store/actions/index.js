@@ -7,13 +7,10 @@ const QUEST = "QUEST"
 
 const RESET_TOP_HEADLINERS = "RESET_TOP_HEADLINERS"
 
-const setTopHeadlines = news => {
-    console.log("in actions", news)
-    return {
-        type: SET_TOP_HEADLINES,
-        news
-    }
-}
+const setTopHeadlines = news => ({
+    type: SET_TOP_HEADLINES,
+    news
+})
 const stopLoadNews = () => ({
     type: STOP_LOAD_NEWS
 })
@@ -31,12 +28,9 @@ const quest = quest => ({
     type: QUEST,
     quest
 })
-const resetTopHeadliners = () => {
-    console.log("triggered")
-    return {
-        type: RESET_TOP_HEADLINERS
-    }
-}
+const resetTopHeadliners = () => ({
+    type: RESET_TOP_HEADLINERS
+})
 
 export {
     SET_TOP_HEADLINES,
