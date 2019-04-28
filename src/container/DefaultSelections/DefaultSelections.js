@@ -8,6 +8,8 @@ import {
 } from "react-native"
 import { withNavigation, StackActions } from 'react-navigation'
 
+import AsyncStorage from '@react-native-community/async-storage';
+
 import { connect } from "react-redux"
 import { quest, query, setTopHeadlines } from "../../store/actions"
 
@@ -96,6 +98,7 @@ class DefaultSelections extends Component {
             setQuest("everything")
         }
         setDefaultQuery(queryObj)
+        AsyncStorage.setItem("defaultSelections", JSON.stringify(queryObj));
         this.handleClose()
     }
 

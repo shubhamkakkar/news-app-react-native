@@ -4,6 +4,7 @@ import {
     View, Text, Container
 } from "native-base";
 
+
 import { connect } from "react-redux"
 import { quest, query, setTopHeadlines, resetTopHeadliners } from "../../store/actions"
 
@@ -131,9 +132,11 @@ class SearchBarContainer extends Component {
     }
 
     loadCustomNews = () => {
-        this.props.resetTopHeadliners()
-        this.props.setDefaultQuery(this.state.queryObj)
-        this.props.handleClose()
+        const { resetTopHeadliners, setDefaultQuery, handleClose } = this.props
+        const { queryObj } = this.state
+        resetTopHeadliners()
+        setDefaultQuery(queryObj)
+        handleClose()
     }
 
     render() {
